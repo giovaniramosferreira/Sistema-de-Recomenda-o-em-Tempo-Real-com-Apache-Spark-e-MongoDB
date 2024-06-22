@@ -68,33 +68,31 @@ Nesta célula, são importadas as bibliotecas necessárias para a criação do s
 
 
 
-### Configuração da Sessão Spark
-
+#### Configuração da Sessão Spark
 Cria uma sessão do Spark e configura a conexão com um banco de dados MongoDB.
 
-### Leitura e Processamento dos Dados
-
+#### Leitura e Processamento dos Dados
 Lê um arquivo de texto com avaliações de filmes e transforma essas avaliações em um DataFrame do Spark.
 
-### Divisão dos Dados
+#### Divisão dos Dados
 Divide os dados em conjuntos de treinamento e teste, sendo 80% e 20% respectivamente.
 
-### Treinamento do Modelo
+#### Treinamento do Modelo
 Configura e treina um modelo de recomendação ALS (Alternating Least Squares) usando o conjunto de treinamento.
 
-### Avaliação do Modelo
+#### Avaliação do Modelo
 Transforma os dados de teste com o modelo treinado e avalia a precisão do modelo usando o RMSE (Root Mean Square Error).
 
-### Recomendação para Usuários
+#### Recomendação para Usuários
 Gera recomendações de filmes para todos os usuários e exibe as primeiras 10 recomendações.
 
-### Recomendação para Itens (Filmes)
+#### Recomendação para Itens (Filmes)
 Gera recomendações de usuários para todos os filmes e exibe as primeiras 20 recomendações.
 
-### Seleção de Recomendação por IDs de Filmes
+#### Seleção de Recomendação por IDs de Filmes
 Seleciona apenas os IDs dos filmes recomendados para os usuários.
 
-### Salvando as Recomendações no MongoDB
+#### Salvando as Recomendações no MongoDB
 Salva as recomendações geradas no MongoDB.
 
 
@@ -105,30 +103,6 @@ Salva as recomendações geradas no MongoDB.
 
 
 
-
-
-
-
-
-
-Configuração do Apache Spark e instalação das bibliotecas necessárias.
-Configuração do MongoDB localmente e inserção de dados de teste.
-Configuração do Kafka para criação e gerenciamento de tópicos.
-Utilização de Docker para isolar e gerenciar os diferentes componentes do projeto.
-Desenvolvimento do Modelo de Recomendação:
-
-Criação do modelo de recomendação utilizando o algoritmo ALS.
-Treinamento do modelo com dados de exemplo.
-Geração de recomendações e armazenamento no MongoDB.
-Desenvolvimento da API com FastAPI:
-
-Implementação da API para consultas de recomendações baseadas no ID do usuário.
-Testes de endpoints da API utilizando ferramentas como Postman.
-Implementação do Spark Streaming com Kafka:
-
-Desenvolvimento de uma aplicação Spark que se conecta a um tópico Kafka para receber mensagens com o ID do usuário.
-Consulta das recomendações no MongoDB utilizando Mongo Spark Connector.
-Envio das recomendações para um tópico Kafka definido.
 
 
 ## 📋5 - Conclusão
