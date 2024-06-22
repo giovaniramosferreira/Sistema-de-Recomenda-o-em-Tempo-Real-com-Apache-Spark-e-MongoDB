@@ -63,46 +63,121 @@ uma vez que o container com o Jypiter e o Mongo estão rodando, vamos acessar o 
 o script acima faz o seguinte:
 
 
-### Importação de Bibliotecas
+#### 1 - Importação de Bibliotecas
 Nesta célula, são importadas as bibliotecas necessárias para a criação do sistema de recomendação. Também há uma verificação da versão do Python para garantir compatibilidade com a função long.
 
-
-
-#### Configuração da Sessão Spark
+#### 2 - Configuração da Sessão Spark
 Cria uma sessão do Spark e configura a conexão com um banco de dados MongoDB.
 
-#### Leitura e Processamento dos Dados
+#### 3 - Leitura e Processamento dos Dados
 Lê um arquivo de texto com avaliações de filmes e transforma essas avaliações em um DataFrame do Spark.
 
-#### Divisão dos Dados
+#### 4 - Divisão dos Dados
 Divide os dados em conjuntos de treinamento e teste, sendo 80% e 20% respectivamente.
 
-#### Treinamento do Modelo
+#### 5 - Treinamento do Modelo
 Configura e treina um modelo de recomendação ALS (Alternating Least Squares) usando o conjunto de treinamento.
 
-#### Avaliação do Modelo
+#### 6 - Avaliação do Modelo
 Transforma os dados de teste com o modelo treinado e avalia a precisão do modelo usando o RMSE (Root Mean Square Error).
 
-#### Recomendação para Usuários
+#### 7 - Recomendação para Usuários
 Gera recomendações de filmes para todos os usuários e exibe as primeiras 10 recomendações.
 
-#### Recomendação para Itens (Filmes)
+#### 8 - Recomendação para Itens (Filmes)
 Gera recomendações de usuários para todos os filmes e exibe as primeiras 20 recomendações.
 
-#### Seleção de Recomendação por IDs de Filmes
+#### 9 - Seleção de Recomendação por IDs de Filmes
 Seleciona apenas os IDs dos filmes recomendados para os usuários.
 
-#### Salvando as Recomendações no MongoDB
+#### 10 - Salvando as Recomendações no MongoDB
 Salva as recomendações geradas no MongoDB.
 
 
+Depois da execução do script de treinamento do modelo e inserção das recomendações no MongoDB, vamos utilizar o MongoDBCompass para verificar is itens inseridos:
+
+![...](./assets/Mongo.png)
+
+
+![...](./assets/Recomendacoes.png)
+
+
+### 10 - Criação da API utilizando Fast API
+
+Primeiro, vamos criar um script python para realizar consultas em nosso MongoDB
+
+o script será esse:
+
+```
+from pymongo import MongoClient
+
+def inicia_conexao():
+
+    client = MongoClient("localhost", 28017)
+    db = client['puc']
+    col = db.recomendacoes
+    return col
+
+def consulta_recomendacoes(usuario, conexao):
+    recomendacoes = list(conexao.find({"userId": usuario}))
+    list_rec = []
+    for rec in recomendacoes:
+        list_rec.append({'id': rec['movieId'], 'rating': rec['rating']})
+    return list_rec
 
 
 
+conn = inicia_conexao()
+print(consulta_recomendacoes(28,conn))
+```
+
+Este script Python conecta-se a um banco de dados MongoDB, especificamente à coleção "recomendacoes" dentro do banco "puc" em um servidor. Ele contém uma função para iniciar essa conexão e outra para consultar as recomendações de filmes de um usuário específico, identificado pelo campo userId. A consulta retorna uma lista de dicionários contendo movieId e rating das recomendações do usuário.
 
 
+agora estamos prontos para criar nossa API utilizando FastAPI. para isso, vamos executar o seguinte script:
+
+```
+from fastapi import FastAPI
+import uvicorn
+from bd import mongo
+from typing import List
+
+app = FastAPI()
+conexao = mongo.inicia_conexao()
+
+@app.get("/rec/v1")
+def rota_padrao():
+    return {"Rota padrão": "Você acessou a rota default"}
+
+@app.get("/rec/v2/{usuario}")
+def consulta_rec(usuario: int):
+    return {"usuario": usuario, "resultado_recs": mongo.consulta_recomendacoes(usuario, conexao)}
+
+## Criar um terceiro , rodando mais de um usuário e retornando somente os Ids dos filmes
+
+@app.post("/rec/v3/")
+def consulta_multi_recs(usuarios: List[int]):
+    results = {}
+    for usuario in usuarios:
+        recs = mongo.consulta_recomendacoes(usuario, conexao)
+        # Extract only the movie IDs
+        movie_ids = [rec['id'] for rec in recs]
+        results[usuario] = movie_ids
+    return results
+
+if __name__ == "__main__":
+    uvicorn.run(app, host='localhost', port=8000)
+
+```
+
+Este script define uma aplicação web usando FastAPI que se conecta a um banco de dados MongoDB para fornecer recomendações de filmes. Ele possui três rotas: a primeira retorna uma mensagem padrão, a segunda consulta recomendações para um único usuário especificado e a terceira recebe uma lista de usuários e retorna apenas os IDs dos filmes recomendados para cada um. A aplicação é executada localmente usando o servidor uvicorn.
+
+![...](./assets/api.png)
 
 
+quando executamos a terceira rota, passamos uma lista de usuários e os Ids dos filmes recomendados são retornados:
+
+![...](./assets/api2.png)
 
 
 ## 📋5 - Conclusão
