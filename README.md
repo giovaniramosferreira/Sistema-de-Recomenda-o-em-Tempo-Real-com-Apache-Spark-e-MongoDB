@@ -10,9 +10,13 @@ O projeto foca na geração de recomendações usando o modelo ALS (Alternating 
 ## ⚙️ 2 - Hardware e aplicativos utilizados
 
 Apache Spark: Plataforma de processamento de dados em grande escala.
+
 MLlib: Biblioteca de aprendizado de máquina do Spark.
+
 MongoDB: Banco de dados NoSQL.
+
 FastAPI: Framework para construção de APIs em Python.
+
 Docker: Ferramenta para criação e gerenciamento de containers.
                             
 ## 📖 3 - Requisitos do Projeto 
