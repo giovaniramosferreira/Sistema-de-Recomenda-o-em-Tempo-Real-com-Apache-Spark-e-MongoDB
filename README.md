@@ -1,4 +1,4 @@
-![introdução](./assets/Intro.png)
+![introdução](./assets/intro.png)
 
 # Sistema de Recomendação em Tempo Real com Apache Spark e MongoDB
 
