@@ -22,7 +22,9 @@ Docker: Ferramenta para criação e gerenciamento de containers.
 ## 📖 3 - Requisitos do Projeto 
 
 1 - Implementar um sistema de recomendação utilizando o modelo ALS do Spark MLlib.
+
 2 - Armazenar as recomendações no MongoDB.
+
 3 - Criar uma API utilizando FastAPI para fornecer recomendações baseadas nas preferencias do usuário.
 
 ## 📝4 - Procedimentos e resultados
