@@ -106,6 +106,15 @@ Depois da execução do script de treinamento do modelo e inserção das recomen
 
 Primeiro, vamos criar um script python para realizar consultas em nosso MongoDB
 
+para isso, precisamos instalar os requerimentos com esse executando o arquivo requirements:
+
+```
+fastapi==0.68.0
+uvicorn==0.15.0
+pymongo==3.12.0
+
+```
+
 o script será esse:
 
 ```
